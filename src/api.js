@@ -1,5 +1,6 @@
 const API_BASE_URL = "https://api.videosdk.live";
-const VIDEOSDK_TOKEN = process.env.REACT_APP_VIDEOSDK_TOKEN;
+const VIDEOSDK_TOKEN =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiJkOWJjYzllYi1kZDlhLTRlYzgtYjY5YS1iYTZjNTYyMWQxOTMiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTcyNTIxODI4NiwiZXhwIjoxNzI1ODIzMDg2fQ.dRh_Lm_5iN1-oRoHzaCmWX4U1zz-WwhJnLZMaDekxYY";
 const API_AUTH_URL = process.env.REACT_APP_AUTH_URL;
 
 export const getToken = async () => {
@@ -27,38 +28,40 @@ export const createMeeting = async ({ token }) => {
     headers: { Authorization: token, "Content-Type": "application/json" },
   };
 
-  const response = await fetch(url, options)
-  const data = await response.json()
+  const response = await fetch(url, options);
+  const data = await response.json();
 
   if (data.roomId) {
-    return { meetingId: data.roomId, err: null }
+    return { meetingId: data.roomId, err: null };
   } else {
-    return { meetingId: null, err: data.error }
+    return { meetingId: null, err: data.error };
   }
-
 };
 
 export const validateMeeting = async ({ roomId, token }) => {
+  console.log("roomId ", roomId);
+  console.log("token1  ", token);
   const url = `${API_BASE_URL}/v2/rooms/validate/${roomId}`;
-
+  console.log(url)
   const options = {
     method: "GET",
     headers: { Authorization: token, "Content-Type": "application/json" },
   };
 
-  const response = await fetch(url, options)
+  const response = await fetch(url, options);
 
   if (response.status === 400) {
-    const data = await response.text()
-    return { meetingId: null, err: data }
+    console.log("entred the error !!!")
+    const data = await response.text();
+    return { meetingId: null, err: data };
   }
 
-  const data = await response.json()
-
+  const data = await response.json();
+  console.log("dara !!!! == ",data)
   if (data.roomId) {
-    return { meetingId: data.roomId, err: null }
+    console.log('i am here too!! ',data.roomId)
+    return { meetingId: data.roomId, err: null };
   } else {
-    return { meetingId: null, err: data.error }
+    return { meetingId: null, err: data.error };
   }
-
 };
